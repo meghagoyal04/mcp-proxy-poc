@@ -1,0 +1,23 @@
+name: POC Check
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to check out"
+        required: false
+        type: string
+permissions:
+  contents: read
+jobs:
+  poc-required:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+      - name: Report which SHA this check ran on
+        run: |
+          echo "poc-required check OK"
+          echo "event=${{ github.event_name }}"
+          echo "sha=$(git rev-parse HEAD)"
